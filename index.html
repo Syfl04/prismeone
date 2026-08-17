@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrismeOne — Architecture Visuelle</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0d1117; color:#c9d1d9; font-family:Segoe UI,Arial,sans-serif; padding:30px; }
+h1 { text-align:center; color:#58a6ff; margin-bottom:10px; font-size:22px; }
+h2 { color:#58a6ff; font-size:16px; margin:30px 0 15px; border-bottom:1px solid #21262d; padding-bottom:5px; }
+.sub { text-align:center; color:#8b949e; margin-bottom:30px; font-size:13px; }
+
+.diagram { display:flex; flex-direction:column; gap:20px; max-width:1100px; margin:0 auto; }
+
+/* Couches */
+.layer { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px; }
+.layer-title { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:#8b949e; margin-bottom:15px; }
+
+.nodes { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+
+/* Noeuds */
+.node { background:#21262d; border:1px solid #30363d; border-radius:6px; padding:12px 18px; text-align:center; min-width:120px; }
+.node .icon { font-size:28px; margin-bottom:6px; }
+.node .name { font-size:14px; font-weight:600; color:#e6edf3; }
+.node .detail { font-size:11px; color:#8b949e; margin-top:4px; }
+
+/* Couleurs */
+.cf    { border-color:#f6821f66; } .cf .name    { color:#f6821f; }
+.host  { border-color:#673ab766; } .host .name  { color:#9575cd; }
+.cldr  { border-color:#4caf5066; } .cldr .name { color:#81c784; }
+.app   { border-color:#2196f366; } .app .name   { color:#64b5f6; }
+.gh    { border-color:#8b949e66; } .gh .name    { color:#c9d1d9; }
+.tg    { border-color:#039be566; } .tg .name    { color:#29b6f6; }
+.local { border-color:#ff980066; } .local .name { color:#ffb74d; }
+
+/* Fleches */
+.arrows { display:flex; flex-direction:column; align-items:center; gap:4px; margin:4px 0; }
+.arrow { color:#484f58; font-size:13px; text-align:center; }
+.arrow span { color:#8b949e; font-size:10px; }
+
+.flow { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:20px; }
+.flow-col { min-width:280px; }
+.flow-item { display:flex; align-items:flex-start; gap:8px; margin-bottom:12px; font-size:13px; }
+.flow-num { background:#1f6feb; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; margin-top:1px; }
+.flow-text { color:#c9d1d9; }
+.flow-text .u { color:#f6821f; font-weight:600; }
+
+table { width:100%; border-collapse:collapse; margin:10px 0; font-size:13px; }
+th, td { padding:8px 12px; text-align:left; border-bottom:1px solid #21262d; }
+th { color:#8b949e; font-weight:600; }
+td code { background:#21262d; padding:2px 6px; border-radius:3px; font-size:12px; color:#f6821f; }
+
+.warn { background:#1a1000; border:1px solid #3d2700; border-radius:6px; padding:12px 16px; margin-top:15px; font-size:13px; color:#d2991d; }
+.warn strong { color:#f0883e; }
+</style>
+</head>
+<body>
+
+<h1>Architecture de PrismeOne</h1>
+<p class="sub">Système complet — PC, Cloudflare, Hostinger, Cloudron, GitHub, n8n, NocoDB, Telegram</p>
+
+<div class="diagram">
+
+<!-- COUCHE 1 : PC -->
+<div class="layer">
+  <div class="layer-title">Ton PC (Prism1) — Windows</div>
+  <div class="nodes">
+    <div class="node local">
+      <div class="icon">📝</div><div class="name">Obsidian</div>
+      <div class="detail">Vault 2ndCerveauSF</div>
+    </div>
+    <div class="node local">
+      <div class="icon">🤖</div><div class="name">OpenCode CLI</div>
+      <div class="detail">Jarvis — DeepSeek V4 Pro</div>
+    </div>
+    <div class="node local">
+      <div class="icon">📊</div><div class="name">MT4 (Axi)</div>
+      <div class="detail">EURUSD + XAUUSD EA</div>
+    </div>
+    <div class="node local">
+      <div class="icon">🔑</div><div class="name">SSH</div>
+      <div class="detail">ssh mon-serveur → 82.29.175.18:2222</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows"><div class="arrow">▼ DNS & Proxy ▼<br><span>viegratuitepourtous.tech et tous ses sous-domaines</span></div></div>
+
+<!-- COUCHE 2 : Cloudflare -->
+<div class="layer">
+  <div class="layer-title">Cloudflare — DNS + Proxy + SSL</div>
+  <div class="nodes">
+    <div class="node cf">
+      <div class="icon">🌐</div><div class="name">DNS</div>
+      <div class="detail">viegratuitepourtous.tech<br>→ 82.29.175.18</div>
+    </div>
+    <div class="node cf">
+      <div class="icon">🛡️</div><div class="name">Proxy (CDN)</div>
+      <div class="detail">Cache + DDoS protection<br>IP serveur masquée</div>
+    </div>
+    <div class="node cf">
+      <div class="icon">🔒</div><div class="name">SSL/TLS</div>
+      <div class="detail">Certificats auto<br>HTTPS forcé</div>
+    </div>
+    <div class="node cf">
+      <div class="icon">📋</div><div class="name">Sous-domaines</div>
+      <div class="detail">my / automate / sheets<br>→ routés vers Cloudron</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows"><div class="arrow">▼ Port 443 (HTTPS) ▼<br><span>Cloudflare forward vers le VPS</span></div></div>
+
+<!-- COUCHE 3 : Hostinger VPS -->
+<div class="layer">
+  <div class="layer-title">Hostinger VPS (Ubuntu 24.04) — srv1554889.hstgr.cloud</div>
+  <div class="nodes">
+    <div class="node host">
+      <div class="icon">🖥️</div><div class="name">82.29.175.18</div>
+      <div class="detail">IP publique</div>
+    </div>
+    <div class="node host">
+      <div class="icon">🔄</div><div class="name">iptables</div>
+      <div class="detail">Firewall Cloudron<br>Ports: 22,80,202,2222,443,8443</div>
+    </div>
+    <div class="node host">
+      <div class="icon">🔐</div><div class="name">SSH (sshd)</div>
+      <div class="detail">Port 2222 + 8443<br>Clé ed25519 uniquement</div>
+    </div>
+    <div class="node host">
+      <div class="icon">🛑</div><div class="name">fail2ban</div>
+      <div class="detail">3 essais → ban 1h</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows"><div class="arrow">▼ Gestion applicative ▼</div></div>
+
+<!-- COUCHE 4 : Cloudron -->
+<div class="layer">
+  <div class="layer-title">Cloudron v9.1.5 — Plateforme d'apps</div>
+  <div class="nodes">
+    <div class="node cldr">
+      <div class="icon">📦</div><div class="name">Reverse Proxy</div>
+      <div class="detail">Nginx<br>my / automate / sheets</div>
+    </div>
+    <div class="node cldr">
+      <div class="icon">📧</div><div class="name">Email</div>
+      <div class="detail">ocw74oooy@mozmail.com</div>
+    </div>
+    <div class="node cldr">
+      <div class="icon">🔄</div><div class="name">Cron Sync</div>
+      <div class="detail">Git pull/push<br>toutes les 2 min</div>
+    </div>
+  </div>
+</div>
+
+<div class="arrows"><div class="arrow">▼ Apps installées ▼</div></div>
+
+<!-- COUCHE 5 : Applications -->
+<div class="layer">
+  <div class="layer-title">Applications Cloudron</div>
+  <div class="nodes">
+    <div class="node app">
+      <div class="icon">⚡</div><div class="name">n8n</div>
+      <div class="detail">automate.viegratuitepourtous.tech<br>Murphy Routine Bot</div>
+    </div>
+    <div class="node app">
+      <div class="icon">📊</div><div class="name">NocoDB</div>
+      <div class="detail">sheets.viegratuitepourtous.tech<br>API Token: nc_pat_rKMI…</div>
+    </div>
+    <div class="node app">
+      <div class="icon">🤖</div><div class="name">OpenCode Serveur</div>
+      <div class="detail">User: ia<br>Bot: @JarvisSecondCerveauBot</div>
+    </div>
+  </div>
+</div>
+
+<!-- EXTERNES -->
+<div class="arrows"><div class="arrow">▼ Services externes ▼</div></div>
+
+<div class="layer">
+  <div class="layer-title">Services Externes</div>
+  <div class="nodes">
+    <div class="node gh">
+      <div class="icon">📁</div><div class="name">GitHub</div>
+      <div class="detail">Repo 2ndCerveauSF<br>Sync bilatérale</div>
+    </div>
+    <div class="node tg">
+      <div class="icon">💬</div><div class="name">Telegram</div>
+      <div class="detail">@murphy_routine_bot<br>@JarvisSecondCerveauBot</div>
+    </div>
+    <div class="node" style="border-color:#ff525266">
+      <div class="icon">🧠</div><div class="name" style="color:#ff5252">DeepSeek API</div>
+      <div class="detail">Modèle: deepseek-chat</div>
+    </div>
+    <div class="node" style="border-color:#ff525266">
+      <div class="icon">🧠</div><div class="name" style="color:#ff5252">Fireworks AI</div>
+      <div class="detail">Fallback modèles</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- EXPLICATION CLOUDFLARE -->
+<h2>Rôle de Cloudflare</h2>
+<div class="flow">
+  <div class="flow-col">
+    <div class="flow-item"><div class="flow-num">1</div><div class="flow-text">Tu tapes <span class="u">automate.viegratuitepourtous.tech</span> dans ton navigateur</div></div>
+    <div class="flow-item"><div class="flow-num">2</div><div class="flow-text"><span class="u">Cloudflare DNS</span> résout le domaine → IP du VPS (masquée)</div></div>
+    <div class="flow-item"><div class="flow-num">3</div><div class="flow-text"><span class="u">Cloudflare Proxy</span> reçoit la requête, filtre les attaques</div></div>
+    <div class="flow-item"><div class="flow-num">4</div><div class="flow-text">Forward vers <span class="u">Hostinger VPS :443</span> (HTTPS)</div></div>
+  </div>
+  <div class="flow-col">
+    <div class="flow-item"><div class="flow-num">5</div><div class="flow-text"><span class="u">iptables Cloudron</span> accepte le port 443</div></div>
+    <div class="flow-item"><div class="flow-num">6</div><div class="flow-text"><span class="u">Nginx Cloudron</span> lit le sous-domaine (automate) et route vers n8n</div></div>
+    <div class="flow-item"><div class="flow-num">7</div><div class="flow-text"><span class="u">n8n</span> traite la requête (workflow, webhook...)</div></div>
+    <div class="flow-item"><div class="flow-num">8</div><div class="flow-text">Réponse remonte via <span class="u">Cloudflare → ton PC</span></div></div>
+  </div>
+</div>
+
+<h2>Tableau des flux</h2>
+<table>
+  <tr><th>Service</th><th>URL</th><th>Port</th><th>Passe par Cloudflare ?</th></tr>
+  <tr><td>Cloudron admin</td><td><code>my.viegratuitepourtous.tech</code></td><td>443</td><td>✅ Oui</td></tr>
+  <tr><td>n8n</td><td><code>automate.viegratuitepourtous.tech</code></td><td>443</td><td>✅ Oui</td></tr>
+  <tr><td>NocoDB</td><td><code>sheets.viegratuitepourtous.tech</code></td><td>443</td><td>✅ Oui</td></tr>
+  <tr><td>SSH</td><td><code>82.29.175.18:2222</code></td><td>2222</td><td>❌ Direct (IP)</td></tr>
+  <tr><td>Telegram → n8n</td><td>Webhook Telegram</td><td>443</td><td>✅ Oui</td></tr>
+  <tr><td>Git Sync</td><td>github.com</td><td>22/443</td><td>❌ Direct</td></tr>
+</table>
+
+<div class="warn">
+  <strong>⚠️ Point critique :</strong> SSH (port 2222) ne passe PAS par Cloudflare. C'est une connexion directe à l'IP du VPS. Si Cloudflare bloque une IP ou si le proxy est mal configuré, SSH n'est pas impacté. En revanche, si iptables Cloudron bloque le port 2222 (comme le 20 mai), SSH tombe — et là il faut la console VNC Hostinger.
+</div>
+
+<h2>Pourquoi Cloudflare est essentiel</h2>
+<table>
+  <tr><th>Rôle</th><th>Sans Cloudflare</th><th>Avec Cloudflare</th></tr>
+  <tr><td>DNS</td><td>Géré par Hostinger</td><td>Géré par Cloudflare (plus rapide, plus fiable)</td></tr>
+  <tr><td>Sécurité</td><td>IP serveur exposée</td><td>IP masquée derrière le proxy</td></tr>
+  <tr><td>DDoS</td><td>Aucune protection</td><td>Protection automatique</td></tr>
+  <tr><td>SSL</td><td>Let's Encrypt manuel</td><td>Cloudflare gère les certificats</td></tr>
+  <tr><td>Cache</td><td>Aucun</td><td>Cache CDN global (pages plus rapides)</td></tr>
+  <tr><td>Firewall</td><td>iptables uniquement</td><td>Cloudflare WAF + règles custom</td></tr>
+</table>
+
+</body>
+</html>
